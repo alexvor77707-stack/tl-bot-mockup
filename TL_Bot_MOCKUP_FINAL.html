@@ -158,7 +158,7 @@
   }
   /* Голубая светящаяся линия у правого края сайдбара (как в оригинале) */
   .sidebar::after {
-    content: ''; position: absolute; right: 4px; top: 99px; height: 630px;
+    content: ''; position: absolute; right: 4px; top: 99px; height: min(630px, calc(100vh - 280px));
     width: 5px; background: #26b6eb; border-radius: 3px;
     box-shadow: 0 0 12px rgba(38,182,235,.55);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
@@ -303,7 +303,7 @@
     box-shadow: none;
   }
   .icon-btn {
-    width: 44px; height: 38px; border-radius: 10px; margin-bottom: 4px;
+    width: 44px; height: 38px; border-radius: 10px;
     background: #101726; border: 1px solid var(--border-btn);
     color: #aab7c4; display: grid; place-items: center; cursor: pointer;
     position: relative; transition: color .15s ease, border-color .15s ease;
@@ -325,12 +325,12 @@
 
   /* ---------- Контент ---------- */
   .content {
-    flex: 1; overflow-y: auto; padding: 47px 46px 34px 30px;
+    flex: 1; overflow-y: auto; overflow-x: auto; padding: 47px 46px 34px 30px;
     max-width: 1395px; margin: 0 auto; width: 100%;
   }
 
   /* ---------- Карточки статистики ---------- */
-  .stats-row { display: flex; gap: 13px; overflow-x: auto; padding-bottom: 4px; justify-content: center; }
+  .stats-row { display: flex; gap: 13px; overflow-x: auto; padding-bottom: 4px; justify-content: safe center; }
   .stat-card {
     flex: 0 0 174px; display: flex; flex-direction: column; align-items: flex-start;
     background: var(--bg-card); border: 1px solid var(--border);
@@ -422,7 +422,7 @@
   .tool-btn {
     width: 40px; height: 37px; border-radius: 10px; flex-shrink: 0;
     background: #0b1e2f; border: 1px solid #1c3a52;
-    color: var(--text-3); display: grid; place-items: center; cursor: pointer;
+    color: #b9cbda; display: grid; place-items: center; cursor: pointer;
     transition: color .15s ease, border-color .15s ease;
   }
   .tool-btn.t-filter { background: #0a2439; }
@@ -457,8 +457,17 @@
   .checkbox {
     width: 18px; height: 18px; border-radius: 5px;
     border: 1.5px solid #3a475a; display: inline-block; cursor: pointer;
-    background: transparent;
+    background: transparent; position: relative;
+    transition: background .12s ease, border-color .12s ease;
   }
+  .checkbox.on { background: #22a7e0; border-color: #22a7e0; }
+  .checkbox.on::before {
+    content: ''; position: absolute; left: 5px; top: 1.5px;
+    width: 5px; height: 9px;
+    border: solid #fff; border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  tbody tr.acc-row:has(.checkbox.on) { background: rgba(34,167,224,.05); }
 
   .acc-cell { display: flex; align-items: center; gap: 13px; }
   .acc-avatar {
@@ -468,8 +477,8 @@
     margin: 3px 0 0 5px; transform: translateY(-1px);
   }
   .acc-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .acc-name { font-size: 14.5px; font-weight: 500; color: #dbe1e9; line-height: 1.15; margin-top: 5px; letter-spacing: -.35px; }
-  .acc-meta { font-size: 12px; color: #94a3b8; line-height: 1.72; margin-top: 1px; }
+  .acc-name { font-size: 14.5px; font-weight: 500; color: #dbe1e9; line-height: 1.15; margin-top: 5px; letter-spacing: -.35px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+  .acc-meta { font-size: 12px; color: #94a3b8; line-height: 1.72; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
   .acc-meta .uname { color: #9b9ba4; }
 
   .role-pill {
@@ -481,11 +490,11 @@
   .role-pill .ic { color: var(--text-3); }
 
   .badge-ok {
-    background: none; color: #86efac;
-    border: none;
+    background: rgba(34,197,94,.09); color: #86efac;
+    border: 1px solid rgba(34,197,94,.26);
     display: inline-flex; align-items: center; gap: 7px;
     font-size: 12.5px; font-weight: 500;
-    padding: 0 0 0 6px; border-radius: 0;
+    padding: 3px 10px; border-radius: 999px;
   }
   .badge-ok .ic { stroke-width: 2.6; }
 
@@ -516,19 +525,7 @@
   .pill-group .sep { color: var(--text-5); font-size: 12px; }
   .pill-group .ggr { color: var(--green-text); font-weight: 600; font-size: 12.5px; }
 
-  .proxy-btn {
-    width: 38px; height: 38px; border-radius: 10px; cursor: pointer;
-    border: 1px solid rgba(239,68,68,.32);
-    background: rgba(239,68,68,.08); color: var(--red-text);
-    display: grid; place-items: center;
-    box-shadow: none;
-    transition: box-shadow .15s ease, border-color .15s ease;
-  }
-  .proxy-btn:hover { border-color: rgba(239,68,68,.65); box-shadow: 0 0 22px rgba(239,68,68,.25); }
-  .proxy-btn .core {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: #e8394a; box-shadow: none;
-  }
+
 
   .actions-cell { display: inline-flex; gap: 8px; }
   .actions-cell .plain { display: inline-flex; gap: 8px; }
@@ -554,7 +551,7 @@
   }
   .pg:hover { color: var(--text-1); border-color: #33465a; }
   .pg.active {
-    background: var(--bg-btn-dark); border: 1px solid #33465a;
+    background: #1e8ed0; border: 1px solid #2e9be0;
     color: #fff; font-weight: 700;
     box-shadow: none;
   }
@@ -682,9 +679,8 @@
   .am-tip { display: flex; align-items: center; gap: 10px; background: #10202f; border: 1px solid #1c3a52;
     border-radius: 9px; padding: 9px 13px; margin-bottom: 8px; font-size: 12.5px; color: #a9bccb; }
   .am-tip .ic { width: 15px; height: 15px; color: #4fc3f7; flex-shrink: 0; }
-  .am-seg { display: inline-flex; background: #0d1520; border: 1px solid #233043; border-radius: 8px; padding: 3px; gap: 2px; }
-  .am-seg button { border: none; background: none; color: #7d8ea0; font-family: inherit; font-size: 12.5px;
-    font-weight: 600; padding: 6px 14px; border-radius: 6px; cursor: pointer; }
+
+
   .am-seg button.on { background: #1c2f43; color: #fff; }
   .am-hist-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 2px; border-bottom: 1px solid #16222f; }
   .am-hist-item:last-child { border-bottom: none; }
@@ -717,11 +713,9 @@
   .am-asec-t { display: flex; align-items: center; gap: 9px; font-size: 11.5px; font-weight: 700;
     letter-spacing: 1px; text-transform: uppercase; color: #3d8fc9; margin-bottom: 12px; }
   .am-asec-t .ic { width: 15px; height: 15px; }
-  .am-abtns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .am-abtn { height: 46px; border-radius: 10px; border: 1px solid #1d2b3d; background: #0e1725;
-    color: #c5cdd5; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 11px; padding: 0 15px; text-align: left; }
-  .am-abtn:hover { border-color: #2a3f58; background: #121e2e; }
+
+
+
   .am-abtn .aic { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; }
   .am-abtn .aic svg { width: 16px; height: 16px; }
   .aic.blue { background: #10344e; color: #4fc3f7; }
@@ -748,9 +742,8 @@
   .am-period-row { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
   .am-period-row .am-date { margin-left: auto; font-size: 12.5px; color: #8a99a9; display: flex; align-items: center; gap: 8px; }
   .am-period-row .am-date .ic { width: 14px; height: 14px; color: #55677a; }
-  .am-chip { border: none; background: #0e1725; border: 1px solid #1d2b3d; color: #7d8ea0; font-family: inherit;
-    font-size: 12.5px; font-weight: 600; padding: 7px 15px; border-radius: 8px; cursor: pointer; }
-  .am-chip.on { background: #1c2f43; border-color: #2a4b6b; color: #fff; }
+
+
   .am-metrics4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
   .am-chart-box { background: #0d1520; border: 1px solid #1d2b3d; border-radius: 12px; padding: 17px 19px 13px; }
   .am-chart-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 8px; }
@@ -768,14 +761,14 @@
   /* ===================== МОДАЛКА «ПУЛ ПРОКСИ» ===================== */
   .pp-overlay {
     position: fixed; inset: 0; z-index: 100;
-    background: rgba(0,0,0,.6);
+    background: rgba(2,6,10,.7);
     display: none;
   }
   .pp-overlay.open { display: block; }
   .pp-modal {
     position: absolute; left: 50%; top: 50%;
     transform: translate(-50%, -50%);
-    width: 879px; height: 726px;
+    width: 879px; height: 726px; max-width: calc(100vw - 24px); max-height: min(726px, calc(100vh - 24px)); overflow-y: auto; scrollbar-width: thin;
     background: #101822;
     border: 1px solid #212f3f;
     border-radius: 12px;
@@ -788,7 +781,6 @@
     height: 82px; flex-shrink: 0;
     display: flex; align-items: flex-start; justify-content: space-between;
     padding: 0 1px 0 0px;
-    border-bottom: 1px solid #23303e;
   }
   .pp-title { font-size: 17px; font-weight: 600; color: #cfd4d9; margin-top: 29px; letter-spacing: .1px; }
   .pp-close {
@@ -843,9 +835,9 @@
   .pp-ban-ic .ic { width: 17px; height: 17px; stroke-width: 1.4; }
   .pp-ban-txt { margin-left: 19px; min-width: 0; }
   .pp-ban-title { font-size: 14.5px; font-weight: 600; color: #b7bfc8; line-height: 1.1; }
-  .pp-ban-sub { font-size: 12px; color: #758597; margin-top: 9px; line-height: 1.15; white-space: nowrap; }
+  .pp-ban-sub { font-size: 12px; color: #758597; margin-top: 9px; line-height: 1.15; white-space: normal; overflow-wrap: break-word; }
   .pp-buy {
-    margin-left: auto; flex-shrink: 0; height: 33px; padding: 0 11px;
+    margin-left: auto; flex-shrink: 0; height: 33px; padding: 0 20px;
     border: none; border-radius: 8px; background: #3aa9e0;
     color: #eef7fd; font-family: inherit; font-size: 13px; font-weight: 600;
     display: inline-flex; align-items: center; gap: 5px; cursor: pointer;
@@ -890,7 +882,7 @@
   .pp-addr {
     margin-left: 10px; font-size: 11.4px; color: #b0b8c1;
     font-family: ui-monospace, 'Cascadia Mono', 'Consolas', 'Menlo', 'DejaVu Sans Mono', monospace;
-    letter-spacing: 0; white-space: nowrap;
+    letter-spacing: 0; white-space: nowrap; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis;
   }
   .pp-meta { margin-left: auto; display: flex; align-items: center; gap: 37px; padding-right: 102px; transform: translateY(2px); }
   .pp-acc-col { display: flex; flex-direction: column; align-items: flex-end; }
@@ -1001,19 +993,10 @@
     background: #2a3545;
   }
   tbody tr.acc-row:hover .proxy-btn, tbody tr.acc-row.dd-open .proxy-btn { display: none; }
-  .proxy-badge {
-    display: none; align-items: center; gap: 7px;
-    padding: 5px 11px; border-radius: 999px; white-space: nowrap;
-    background: #503542; border: 1px solid #91404a;
-    color: #db6668; font-size: 12px; font-weight: 600;
-  }
-  .proxy-badge .pdot {
-    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-    background: #e8394a; box-shadow: 0 0 8px rgba(232,57,74,.8);
-  }
+
+
   tbody tr.acc-row:hover .proxy-badge, tbody tr.acc-row.dd-open .proxy-badge { display: inline-flex; }
   .actions-cell .act-extra { display: none; }
-  .actions-grid { display: inline-flex; flex-direction: column; gap: 6px; }
   .actions-grid .ag-row { display: flex; gap: 6px; }
   .ag-chip {
     width: 32px; height: 30px; border-radius: 8px;
@@ -1051,7 +1034,7 @@
     background: #1a2230; border: 1px solid #353f4f; border-radius: 6px;
     box-shadow: 0 18px 50px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.03);
     display: none; flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
   }
   .role-dd.open { display: flex; }
   .role-dd .rd-head {
@@ -1059,7 +1042,7 @@
     letter-spacing: .8px; text-transform: uppercase;
     border-bottom: 1px solid #2c3a4c;
   }
-  .role-dd .rd-list { overflow-y: hidden; flex: 1; max-height: 452px; }
+  .role-dd .rd-list { overflow-y: auto; flex: 1; max-height: min(452px, calc(100vh - 120px)); scrollbar-width: thin; }
   .role-dd .rd-item {
     display: flex; align-items: center; gap: 11px;
     height: 43px; padding: 0 14px 0 16px;
@@ -1099,7 +1082,7 @@
   }
   .am-overlay.open { display: flex; }
   .am-card {
-    width: 1116px; height: auto; max-height: 822px; min-height: 560px; display: flex; flex-direction: column;
+    width: 1116px; height: auto; max-height: min(822px, calc(100vh - 40px)); min-height: 560px; display: flex; flex-direction: column;
     background: #101726; border: 2px solid #232b3b; border-radius: 12px;
     box-shadow: 0 30px 90px rgba(0,0,0,.6);
     overflow: hidden; position: relative;
@@ -1126,7 +1109,7 @@
   .am-x:hover { color: #fff; background: #1c2735; }
 
   .am-acc {
-    margin: 14px 32px 0; height: 134px; flex-shrink: 0;
+    margin: 14px 32px 0; min-height: 134px; flex-shrink: 0;
     border-radius: 12px; position: relative;
     background: linear-gradient(90deg, #0d3450 0%, #112941 46%, #132032 100%);
     border: 1px solid #0c3f61;
@@ -1655,7 +1638,7 @@
     border-bottom: 1px solid #232b3b;
   }
   .aa-title { font-size: 16px; font-weight: 700; color: #fff; }
-  .aa-steps { display: flex; padding: 16px 22px 6px; }
+  /* (V-FIX: старые .aa-steps/.aa-step удалены — используются .aa-steps2/.aa-step2) */
   .aa-step { flex: 1; position: relative; text-align: center; }
   .aa-step .dot {
     width: 10px; height: 10px; border-radius: 50%; margin: 0 auto 7px;
@@ -1720,127 +1703,10 @@
   .aa-foot { display: flex; justify-content: flex-end; padding: 14px 22px 18px; }
   .aa-send {
     display: inline-flex; align-items: center; gap: 8px;
-    background: linear-gradient(180deg,#2296dd,#0088cc); border: none; color: #fff;
+    background: linear-gradient(180deg,#1a7cb8,#0b639c); border: none; color: #fff;
     border-radius: 9px; padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
   }
   .aa-send .ic { width: 14px; height: 14px; }
-
-  /* ===================== V004: МОДАЛКА «ИМПОРТИРОВАТЬ АККАУНТЫ» ===================== */
-  .ia-overlay {
-    position: fixed; inset: 0; z-index: 420;
-    background: rgba(3,7,13,.78); backdrop-filter: blur(2px);
-    display: none; align-items: center; justify-content: center;
-  }
-  .ia-overlay.open { display: flex; }
-  .ia-card {
-    width: 1203px; max-height: 640px; background: #101726; border: 2px solid #232b3b;
-    border-radius: 12px; display: flex; flex-direction: column;
-    box-shadow: 0 30px 90px rgba(0,0,0,.6); overflow: hidden;
-  }
-  .ia-head { display: flex; align-items: center; padding: 16px 24px; border-bottom: 1px solid #232b3b; }
-  .ia-title { font-size: 16px; font-weight: 700; color: #fff; }
-  .ia-x {
-    margin-left: auto; width: 34px; height: 34px; border-radius: 50%;
-    background: #131c28; border: 1px solid #2c3a4c; color: var(--text-3);
-    display: grid; place-items: center; cursor: pointer;
-  }
-  .ia-x:hover { color: #fff; border-color: #3d5266; }
-  .ia-body { padding: 18px 24px 10px; overflow-y: auto; }
-  .ia-body::-webkit-scrollbar { width: 16px; }
-  .ia-body::-webkit-scrollbar-track { background: #0d1520; }
-  .ia-body::-webkit-scrollbar-thumb { background: #26b6eb; border-radius: 8px; border: 5px solid #0d1520; }
-  .ia-counter {
-    font-size: 11.5px; font-weight: 700; letter-spacing: .6px; color: #4fc3f7;
-    text-transform: uppercase; margin-bottom: 12px;
-  }
-  .ia-counter span { color: #6b7885; font-weight: 600; }
-  .ia-acc {
-    display: flex; align-items: center; gap: 9px; padding: 11px 14px;
-    background: #131a29; border: 1px solid #1f2b3d; border-radius: 10px;
-    cursor: pointer; margin-bottom: 14px; user-select: none;
-  }
-  .ia-acc .ic { width: 15px; height: 15px; color: #6b7885; transition: transform .15s ease; }
-  .ia-acc.open .ic { transform: rotate(90deg); color: #4fc3f7; }
-  .ia-acc .t { font-size: 13.5px; font-weight: 600; color: #e8ecf1; }
-  .ia-acc .cnt { margin-left: auto; font-size: 12px; color: #6b7885; }
-  .ia-acc-body {
-    display: none; background: #131a29; border: 1px solid #1f2b3d; border-radius: 10px;
-    padding: 14px 16px; margin: -8px 0 14px; font-size: 12.5px; color: #9aa5b3; line-height: 1.6;
-  }
-  .ia-acc-body.open { display: block; }
-  .ia-srcs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .ia-src {
-    display: flex; flex-direction: column; gap: 6px; text-align: left;
-    background: #131a29; border: 1.5px solid #1f2b3d; border-radius: 12px;
-    padding: 15px 16px 13px; cursor: pointer; position: relative; font-family: inherit;
-    transition: border-color .12s ease, background .12s ease;
-  }
-  .ia-src:hover { border-color: #2e4a6b; }
-  .ia-src.sel { border-color: #2e9be0; background: #10222f; box-shadow: 0 0 18px rgba(46,155,224,.15); }
-  .ia-src .sic {
-    width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center;
-    background: rgba(59,130,246,.14); color: #60a5fa; margin-bottom: 6px;
-  }
-  .ia-src .st { font-size: 14.5px; font-weight: 700; color: #e8ecf1; }
-  .ia-src.sel .st { color: #7cc4f0; }
-  .ia-src .ss { font-size: 11.5px; color: #8a98a6; line-height: 1.45; }
-  .ia-src .arr { position: absolute; right: 14px; top: 16px; color: #4fc3f7; opacity: 0; }
-  .ia-src.sel .arr { opacity: 1; }
-  .ia-or {
-    text-align: center; color: #6b7885; font-size: 12px; margin: 12px 0;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .ia-or::before, .ia-or::after { content: ''; flex: 1; height: 1px; background: #1f2b3d; }
-  .ia-row2 { display: flex; gap: 14px; align-items: flex-start; }
-  .ia-field { flex: 1.4; }
-  .ia-tgl {
-    display: flex; align-items: center; gap: 9px; margin-top: 26px; cursor: pointer; user-select: none;
-  }
-  .ia-tgl .sw {
-    width: 38px; height: 21px; border-radius: 999px; background: #1c2735;
-    border: 1px solid #2c3a4c; position: relative; transition: background .15s ease;
-  }
-  .ia-tgl .sw::after {
-    content: ''; position: absolute; left: 2px; top: 2px; width: 15px; height: 15px;
-    border-radius: 50%; background: #8a98a6; transition: left .15s ease, background .15s ease;
-  }
-  .ia-tgl.on .sw { background: #1b5e8c; border-color: #2e9be0; }
-  .ia-tgl.on .sw::after { left: 19px; background: #7cc4f0; }
-  .ia-tgl .tl { font-size: 12.5px; color: #c5cdd5; }
-  .ia-tgl .ic { width: 14px; height: 14px; color: #4d5b68; }
-  .ia-drop {
-    margin-top: 16px; border: 1.5px dashed #233042; border-radius: 12px;
-    padding: 36px 20px; display: flex; flex-direction: column; align-items: center; gap: 9px;
-    background: #0d1520;
-  }
-  .ia-drop .dic {
-    width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center;
-    background: rgba(59,130,246,.14); color: #60a5fa; margin-bottom: 3px;
-  }
-  .ia-drop .d1 { font-size: 14.5px; font-weight: 700; color: #e8ecf1; }
-  .ia-drop .d2 { font-size: 12.5px; color: #8a98a6; }
-  .ia-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 24px 18px; }
-  .ia-cancel {
-    background: #131c28; border: 1px solid #2c3a4c; color: #c5cdd5; border-radius: 9px;
-    padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
-  }
-  .ia-start {
-    background: linear-gradient(180deg,#2296dd,#0088cc); border: none; color: #fff;
-    border-radius: 9px; padding: 10px 22px; font-size: 13px; font-weight: 700; cursor: pointer;
-    box-shadow: 0 6px 18px rgba(0,136,204,.3);
-  }
-  .ia-start:disabled { opacity: .55; cursor: not-allowed; box-shadow: none; }
-
-  /* ===================== V004: ТОСТ ===================== */
-  .toast {
-    position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px);
-    background: #16283c; border: 1px solid #2e5a80; color: #d7e5f0;
-    padding: 11px 20px; border-radius: 10px; font-size: 13px; z-index: 600;
-    opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease;
-    box-shadow: 0 12px 34px rgba(0,0,0,.5); display: flex; align-items: center; gap: 9px;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-  .toast .ic { width: 15px; height: 15px; color: #4fc3f7; }
 
   /* ===================== AA: шаги-табы (по эталону) ===================== */
   .aa-steps2 { display: flex; gap: 4px; padding: 14px 22px 0; border-bottom: 1px solid #1c2c3e; }
@@ -1862,19 +1728,20 @@
   }
   .imp-overlay.open { display: flex; }
   .imp-card {
-    width: 1203px; background: #101726; border: 2px solid #232b3b; border-radius: 14px;
+    width: 1203px; max-width: calc(100vw - 24px); max-height: calc(100vh - 24px);
+    background: #101726; border: 2px solid #232b3b; border-radius: 14px;
     box-shadow: 0 30px 90px rgba(0,0,0,.6); overflow: hidden;
     display: flex; flex-direction: column;
   }
   .imp-head { display: flex; align-items: center; padding: 18px 26px; border-bottom: 1px solid #232b3b; }
   .imp-title { font-size: 17px; font-weight: 700; color: #fff; }
   .imp-x {
-    margin-left: auto; width: 34px; height: 34px; border-radius: 9px;
-    background: transparent; border: none; color: var(--text-3);
+    margin-left: auto; width: 40px; height: 40px; border-radius: 999px;
+    background: transparent; border: 1px solid #2a3a4d; color: #a8bac9;
     display: grid; place-items: center; cursor: pointer;
   }
   .imp-x:hover { color: #fff; background: #1c2735; }
-  .imp-body { padding: 18px 26px 22px; overflow-y: auto; }
+  .imp-body { padding: 18px 26px 22px; overflow-y: auto; flex: 1 1 auto; min-height: 0; }
   .imp-limit { display: flex; align-items: baseline; gap: 9px; padding-bottom: 13px;
     border-bottom: 1px solid #1c2c3e; font-size: 12.5px; color: #c5cdd5; }
   .imp-limit b { color: #e8ecf1; font-weight: 700; }
@@ -1894,7 +1761,7 @@
   .imp-src.on { border-color: #2e9be0; box-shadow: 0 0 0 1px #2e9be0, 0 0 18px rgba(46,155,224,.18); }
   .imp-src .ic { width: 20px; height: 20px; color: #3b9ee5; flex-shrink: 0; }
   .imp-src .t { font-size: 13.5px; font-weight: 700; color: #e8ecf1; }
-  .imp-src .s { font-size: 11.5px; color: #67788 9; color: #677889; margin-top: 4px; }
+  .imp-src .s { font-size: 11.5px; color: #677889; margin-top: 4px; }
   .imp-src .go { margin-left: auto; color: #2e9be0; }
   .imp-drag-hint { text-align: center; font-size: 12px; color: #5d6f81; margin: 13px 0 15px; }
   .imp-lab { font-size: 13px; font-weight: 600; color: #e8ecf1; margin: 15px 0 7px; }
@@ -1904,6 +1771,8 @@
   }
   .imp-input::placeholder { color: #4d5b68; }
   .imp-toggle-row { display: flex; align-items: center; gap: 11px; margin-top: 16px; }
+  .imp-lab-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  .imp-lab-row .imp-lab { margin: 15px 0 7px; }
   .imp-switch { width: 40px; height: 22px; border-radius: 999px; background: #1a2432; border: 1px solid #2a3a4c;
     position: relative; cursor: pointer; flex-shrink: 0; }
   .imp-switch i { position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; border-radius: 50%;
@@ -1938,7 +1807,61 @@
   }
   .toast.show { opacity: 1; transform: translateY(0); }
   .toast.ok { border-left-color: #22c55e; }
+
+  /* ============ V-FIX: адаптив топбара (десктоп-ориентированный макет) ============ */
+  @media (max-width: 1280px) { .top-right .pill { display: none; } }
+  @media (max-width: 1080px) { .top-right .select-pill:not(.user) { display: none; } }
+  @media (max-width: 900px) { .page-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 0 1 auto; } .topbar { gap: 10px; } }
+  @media (max-width: 780px) { .page-title { display: none; } }
+  @media (max-width: 640px) { .top-right .icon-btn { display: none; } }
+  @media (max-width: 1366px) { .content { padding: 40px 24px 28px 22px; } }
+
+  /* ============ V-FIX: prefers-reduced-motion ============ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+
+  /* ============ V-FIX: фокус-индикаторы полей ============ */
+  .imp-input:focus, #ppTextarea:focus { outline: none; border-color: #2e6f9e; box-shadow: 0 0 0 2px rgba(46,111,158,.25); }
+  .ac-num input:focus { outline: none; border-bottom-color: #2e6f9e; }
+  .checkbox:focus-visible, .pp-check:focus-visible, .role-pill:focus-visible, .nav-item:focus-visible,
+  .pg-count:focus-visible, .select-pill:focus-visible, .acc-avatar:focus-visible, .acc-name:focus-visible,
+  .imp-switch:focus-visible, .ac-check:focus-visible, .pill:focus-visible {
+    outline: 2px solid #2e6f9e; outline-offset: 2px;
+  }
+
+  /* ============ V-FIX: зона клика чекбоксов и сортировок (>=24px) ============ */
+  .checkbox { position: relative; }
+  .checkbox::after { content: ''; position: absolute; inset: -4px; }
+  .sort { position: relative; color: #9db2c4; }
+  .sort::after { content: ''; position: absolute; inset: -5px; }
+
+  /* ============ V-FIX: заголовок страницы не выдавливает топбар ============ */
+  .page-title { min-width: 0; }
+
   .toast.warn { border-left-color: #eab308; }
+
+  /* ============ V-FIX: шаги мастера AA, QR-режим, строка прокси ============ */
+  .aa-stp { display: none; }
+  .aa-stp.show { display: block; }
+  .aa-pxhead > .ic { background: rgba(34,167,224,.14); border: 1px solid rgba(34,167,224,.3); border-radius: 8px; padding: 7px; color: #4fc3f7; }
+  .aa-qr { display: none; text-align: center; padding: 24px 0 8px; }
+  .aa-qr.show { display: block; }
+  .aa-qr-frame { width: 148px; height: 148px; margin: 0 auto 14px; border: 1.5px dashed rgba(59,130,246,.45); border-radius: 14px; display: flex; align-items: center; justify-content: center; background: rgba(59,130,246,.06); }
+  .aa-qr-frame .ic { width: 56px; height: 56px; color: #3b82f6; }
+  .aa-qr-t { font-size: 15px; font-weight: 600; color: #e8edf2; }
+  .aa-qr-s { font-size: 12px; color: #6b7885; margin-top: 6px; }
+  .aa-ok { text-align: center; padding: 30px 0 18px; }
+  .aa-ok-ic { width: 62px; height: 62px; margin: 0 auto 16px; border-radius: 50%; background: rgba(34,197,94,.12); border: 1.5px solid rgba(34,197,94,.4); display: flex; align-items: center; justify-content: center; }
+  .aa-ok-ic .ic { width: 30px; height: 30px; color: #4ade80; }
+  .aa-ok-t { font-size: 17px; font-weight: 700; color: #fff; }
+  .aa-ok-s { font-size: 12.5px; color: #6b7885; margin: 8px auto 0; max-width: 430px; line-height: 1.5; }
+
+  /* ============ V-FIX: футер импорта ============ */
+  .imp-foot { padding: 13px 22px; border-top: 1px solid rgba(255,255,255,.06); display: flex; justify-content: flex-end; }
+  .imp-go { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 10px; border: 1px solid rgba(34,167,224,.55); background: linear-gradient(180deg, rgba(34,167,224,.22), rgba(34,167,224,.09)); color: #d7ecff; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: background .15s, border-color .15s; }
+  .imp-go .ic { width: 16px; height: 16px; }
+  .imp-go:hover { background: linear-gradient(180deg, rgba(34,167,224,.32), rgba(34,167,224,.15)); }
 
 </style>
 </head>
@@ -2009,8 +1932,8 @@
     <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
   </symbol>
   <symbol id="i-msg-send" viewBox="0 0 24 24">
-    <path d="M21 11.5a8.5 8.5 0 01-8.5 8.5c-1.6 0-3.1-.4-4.4-1.2L3 20l1.2-5.1A8.5 8.5 0 1121 11.5z"/>
-    <path d="M12 8.5l4 3-4 3v-2.2h-4v-1.6h4z" class="f"/>
+    <path d="M5 4h13.5A2.5 2.5 0 0121 6.5V15a2.5 2.5 0 01-2.5 2.5H11l-5.5 4.2a.6.6 0 01-1-.5v-3.7H5a2 2 0 01-2-2V6a2 2 0 012-2z" fill="currentColor" stroke="none"/>
+    <path d="M11.2 7.8v6.4L16.8 11l-5.6-3.2z" fill="#131c28" stroke="none"/>
   </symbol>
   <symbol id="i-tag" viewBox="0 0 24 24">
     <path d="M20.6 13.4l-7.2 7.2a2 2 0 01-2.8 0L2.5 12.5V2.5h10l8.1 8.1a2 2 0 010 2.8z"/>
@@ -2151,8 +2074,11 @@
   <symbol id="i-chev-r2" viewBox="0 0 24 24">
     <path d="M6 6l6 6-6 6M13 6l6 6-6 6"/>
   </symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 24 24">
+    <path d="M12 4v15M6.5 13.5L12 19l5.5-5.5"/>
+  </symbol>
   <symbol id="i-sort" viewBox="0 0 24 24">
-    <path d="M8 10l4-4 4 4M8 14l4 4 4-4"/>
+    <path d="M12 3v18M7 8l5-5 5 5M7 16l5 5 5-5"/>
   </symbol>
 
   <symbol id="i-stats-sq" viewBox="0 0 24 24">
@@ -2417,12 +2343,12 @@
     <a class="nav-item"><svg class="ic"><use href="#i-lifebuoy"/></svg>Поддержка</a>
 
     <div class="nav-section divider">Модули</div>
-    <a class="nav-item"><svg class="ic"><use href="#i-chat"/></svg>Нейрокомментинг</a>
-    <a class="nav-item"><svg class="ic"><use href="#i-chats"/></svg>Нейрочаттинг</a>
+    <a class="nav-item"><svg class="ic"><use href="#i-chats"/></svg>Нейрокомментинг</a>
+    <a class="nav-item"><svg class="ic"><use href="#i-chat"/></svg>Нейрочаттинг</a>
     <a class="nav-item"><svg class="ic"><use href="#i-smile"/></svg>Масс Реакции</a>
     <a class="nav-item"><svg class="ic"><use href="#i-monitor-eye"/></svg>Масслукинг</a>
     <a class="nav-item"><svg class="ic"><use href="#i-msg-send"/></svg>ЛС-Рассылки</a>
-    <a class="nav-item"><svg class="ic"><use href="#i-user-chat"/></svg>Чат-Рассылки</a>
+    <a class="nav-item"><svg class="ic"><use href="#i-users2"/></svg>Чат-Рассылки</a>
     <a class="nav-item"><svg class="ic"><use href="#i-tag"/></svg>Масстегинг</a>
     <a class="nav-item"><svg class="ic"><use href="#i-user-plus"/></svg>Инвайтер</a>
     <a class="nav-item"><svg class="ic"><use href="#i-rocket"/></svg>НейроШиллинг</a>
@@ -2480,6 +2406,7 @@
 
   <!-- Контент -->
   <main class="content">
+    <h1 style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap">Менеджер аккаунтов — панель управления аккаунтами</h1>
 
     <!-- Карточки статистики -->
     <div class="stats-row">
@@ -2558,7 +2485,7 @@
               <th style="width:55px">
                 <span class="checkbox"></span>
               </th>
-              <th style="width:79px"># <svg class="ic ic-14 sort"><use href="#i-sort"/></svg></th>
+              <th style="width:79px"># <svg class="ic ic-14 sort"><use href="#i-arrow-down"/></svg></th>
               <th style="width:83px">Аватар</th>
               <th style="width:140px">Имя <svg class="ic ic-14 sort"><use href="#i-sort"/></svg></th>
               <th style="width:112px">Роль</th>
@@ -2572,7 +2499,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="acc-row">
               <td><span class="checkbox"></span></td>
               <td class="num">456318</td>
               <td><div class="acc-avatar" id="accAvatarCell" style="cursor:pointer"><img src="data:image/png;base64,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" alt="Victoria"></div></td>
@@ -2920,7 +2847,7 @@
     <div class="ac-card">
       <div class="ac-btns">
         <button class="ac-b" type="button"><span class="abic green"><svg class="ic"><use href="#i-shield-check"/></svg></span>Проверить спамблок</button>
-        <button class="ac-b disabled" type="button"><span class="abic gray"><svg class="ic"><use href="#i-unlock"/></svg></span>Снять спамблок</button>
+        <button class="ac-b disabled" type="button" aria-disabled="true" tabindex="-1" title="Недоступно: нет активного спамблока"><span class="abic gray"><svg class="ic"><use href="#i-unlock"/></svg></span>Снять спамблок</button>
       </div>
     </div>
   </div>
@@ -3216,12 +3143,35 @@
         <button class="on" type="button" id="aaByPhone"><svg class="ic"><use href="#i-phone2"/></svg>По номеру</button>
         <button type="button" id="aaByQr"><svg class="ic"><use href="#i-qr"/></svg>По QR-коду</button>
       </div>
-      <div class="aa-f">
+      <div class="aa-qr" id="aaQrBox">
+        <div class="aa-qr-frame"><svg class="ic"><use href="#i-qr"/></svg></div>
+        <div class="aa-qr-t">Отсканируйте QR-код в Telegram</div>
+        <div class="aa-qr-s">Telegram → Настройки → Устройства → Подключить устройство</div>
+      </div>
+      <div class="aa-f aa-stp aa-s1">
         <div class="aa-lab">Номер телефона</div>
-        <input class="aa-input" type="text" id="aaPhone" placeholder="+380123456789 или 380123456789">
+        <input class="aa-input" type="text" id="aaPhone" placeholder="+380123456789 или 380123456789" aria-label="Номер телефона">
         <div class="aa-hint">Префикс + является опциональным, он будет добавлен автоматически</div>
       </div>
-      <div class="aa-px">
+      <div class="aa-f aa-stp aa-s2">
+        <div class="aa-lab">Код из SMS</div>
+        <input class="aa-input" type="text" id="aaCode" placeholder="12345" inputmode="numeric" maxlength="5" aria-label="Код из SMS">
+        <div class="aa-hint">Код отправлен на указанный номер, действует 5 минут</div>
+      </div>
+      <div class="aa-f aa-stp aa-s3">
+        <div class="aa-lab">Пароль 2FA (если включён)</div>
+        <div class="aa-pass">
+          <input class="aa-input" type="password" id="aa2fa" placeholder="Пароль двухфакторной аутентификации" style="padding-right:38px" aria-label="Пароль 2FA">
+          <button class="eye" type="button" title="Показать пароль" id="aa2faEye"><svg class="ic ic-14"><use href="#i-eye2"/></svg></button>
+        </div>
+        <div class="aa-hint">Шаг можно пропустить, если двухфакторная аутентификация не включена — нажмите «Подтвердить 2FA»</div>
+      </div>
+      <div class="aa-ok aa-stp aa-s4">
+        <div class="aa-ok-ic"><svg class="ic"><use href="#i-check-c"/></svg></div>
+        <div class="aa-ok-t">Аккаунт добавлен</div>
+        <div class="aa-ok-s">Аккаунт подключён и готов к работе. Осталось назначить роль и прокси — всё можно изменить в карточке аккаунта.</div>
+      </div>
+      <div class="aa-px aa-stp aa-s1">
         <div class="aa-pxhead">
           <svg class="ic"><use href="#i-shield"/></svg>
           <span class="t">ПРОКСИ</span>
@@ -3231,7 +3181,7 @@
             <button class="on" type="button" id="aaFld">Полями</button>
           </div>
         </div>
-        <div class="aa-grid2" style="grid-template-columns: 0.8fr 1.2fr 0.8fr;">
+        <div class="aa-grid2" id="aaGrid" style="grid-template-columns: 0.8fr 1.2fr 1.25fr;">
           <div class="aa-f">
             <div class="aa-lab">Тип</div>
             <div class="aa-sel" id="aaType"><span>socks5</span><svg class="ic"><use href="#i-chevron"/></svg></div>
@@ -3244,17 +3194,21 @@
             <div class="aa-lab">Порт</div>
             <input class="aa-input" type="text" value="9957" id="aaPort">
           </div>
-          <div class="aa-f">
+          <div class="aa-f" style="grid-column: 1 / span 2">
             <div class="aa-lab">Имя пользователя (опционально)</div>
             <input class="aa-input" type="text" value="xz1thk" id="aaLogin">
           </div>
           <div class="aa-f">
             <div class="aa-lab">Пароль (опционально)</div>
             <div class="aa-pass">
-              <input class="aa-input" type="password" value="pgkUn6" id="aaPass" style="padding-right:38px">
+              <input class="aa-input" type="password" value="pgkUn6" id="aaPass" style="padding-right:38px" aria-label="Пароль прокси">
               <button class="eye" type="button" title="Показать пароль" id="aaEye"><svg class="ic ic-14"><use href="#i-eye2"/></svg></button>
             </div>
           </div>
+        </div>
+        <div class="aa-f" id="aaStrBox" style="display:none">
+          <div class="aa-lab">Прокси одной строкой</div>
+          <input class="aa-input" type="text" id="aaProxyStr" placeholder="socks5://user:pass@23.236.132.183:9957" aria-label="Прокси одной строкой">
         </div>
       </div>
     </div>
@@ -3299,17 +3253,22 @@
         </button>
       </div>
       <div class="imp-drag-hint">✥ или перетащите файлы сюда</div>
-      <div class="imp-lab">Источник (продавец / магазин)</div>
-      <input class="imp-input" type="text" placeholder="Ник или ссылка на профиль / лот продавца LZT">
-      <div class="imp-toggle-row">
-        <div class="imp-switch" id="impResetSwitch"><i></i></div>
-        <span class="imp-tgl-txt">Сбросить чужие сессии <svg class="ic"><use href="#i-info"/></svg></span>
+      <div class="imp-lab-row">
+        <div class="imp-lab">Источник (продавец / магазин)</div>
+        <div class="imp-toggle-row" style="margin-top:0">
+          <span class="imp-tgl-txt">Сбросить чужие сессии <svg class="ic"><use href="#i-info"/></svg></span>
+          <div class="imp-switch" id="impResetSwitch"><i></i></div>
+        </div>
       </div>
+      <input class="imp-input" type="text" placeholder="Ник или ссылка на профиль / лот продавца LZT">
       <div class="imp-drop">
         <div class="imp-drop-ic"><svg class="ic"><use href="#i-folder"/></svg></div>
         <div class="imp-drop-t">Нет загруженных аккаунтов</div>
         <div class="imp-drop-s">Загрузите TData или Session файлы, чтобы начать работу</div>
       </div>
+    </div>
+    <div class="imp-foot">
+      <button class="imp-go" type="button" id="impGo"><svg class="ic"><use href="#i-download"/></svg>Импортировать</button>
     </div>
   </div>
 </div>
@@ -3328,6 +3287,7 @@
     <div class="rd-item" data-role="Масслукинг"><svg class="ic rd-ic" style="color:#38bdf8"><use href="#i-eye"/></svg>Масслукинг</div>
     <div class="rd-item" data-role="Спам в ЛС"><svg class="ic rd-ic" style="color:#4ade80"><use href="#i-mail"/></svg>Спам в ЛС</div>
     <div class="rd-item" data-role="Спам в группы"><svg class="ic rd-ic" style="color:#a78bda"><use href="#i-users2"/></svg>Спам в группы</div>
+    <div class="rd-item" data-role="Прогрев"><svg class="ic rd-ic" style="color:#fbbf24"><use href="#i-sun"/></svg>Прогрев</div>
   </div>
   <span class="rd-caret"></span>
   <span class="rd-scroll"></span>
@@ -3336,13 +3296,35 @@
 </div>
 
 <!-- ===================== ТОСТ ===================== -->
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function () {
   'use strict';
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  /* ============ СЛОИ МОДАЛОК: фокус-менеджмент, ловушка Tab, Escape верхнего слоя ============ */
+  var LAYERS = [];
+  var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  var overlayClose = {};
+  function openLayer(overlay, focusSel) {
+    if (LAYERS.indexOf(overlay) >= 0 || overlay.classList.contains('open')) return;
+    overlay._trigger = document.activeElement || null;
+    LAYERS.push(overlay);
+    overlay.classList.add('open');
+    var f = focusSel ? $(focusSel, overlay) : $(FOCUSABLE, overlay);
+    setTimeout(function () { if (f && overlay.classList.contains('open')) f.focus(); }, 40);
+  }
+  function closeLayer(overlay) {
+    overlay.classList.remove('open');
+    for (var i = 0; i < LAYERS.length; i++) {
+      if (LAYERS[i] === overlay) { LAYERS.splice(i, 1); break; }
+    }
+    if (overlay._trigger && typeof overlay._trigger.focus === 'function') {
+      try { overlay._trigger.focus(); } catch (err) {}
+    }
+  }
 
   /* ============ ТОСТ ============ */
   var toast = $('#toast'), toastTimer = null;
@@ -3363,17 +3345,23 @@
   var ppTa = $('#ppTextarea');
   var ppClear = $('#ppClear');
 
-  function openPP() { ppOverlay.classList.add('open'); ppBtn.classList.add('is-open'); }
-  function closePP() { ppOverlay.classList.remove('open'); ppBtn.classList.remove('is-open'); }
+  function openPP() { openLayer(ppOverlay, '#ppClose'); ppBtn.classList.add('is-open'); }
+  function closePP() { closeLayer(ppOverlay); ppBtn.classList.remove('is-open'); }
+  overlayClose['ppOverlay'] = function () { closePP(); };
   if (ppBtn) ppBtn.addEventListener('click', function () {
     ppOverlay.classList.contains('open') ? closePP() : openPP();
   });
   $('#ppClose').addEventListener('click', closePP);
   ppOverlay.addEventListener('click', function (e) { if (e.target === ppOverlay) closePP(); });
 
-  function setPPCheck(on) { ppCheck.classList.toggle('on', on); }
+  function setPPCheck(on) {
+    ppCheck.classList.toggle('on', on);
+    ppSelectAll.firstChild.nodeValue = (on ? 'Снять все' : 'Выбрать все') + '\n          ';
+  }
   ppCheck.addEventListener('click', function () { setPPCheck(!ppCheck.classList.contains('on')); });
-  ppSelectAll.addEventListener('click', function () { setPPCheck(!ppCheck.classList.contains('on')); });
+  ppSelectAll.addEventListener('click', function () {
+    setPPCheck(!ppCheck.classList.contains('on'));
+  });
   $$('.pp-seg', ppToggle).forEach(function (seg) {
     seg.addEventListener('click', function () {
       $$('.pp-seg', ppToggle).forEach(function (s) { s.classList.remove('on'); s.classList.add('off'); });
@@ -3381,39 +3369,55 @@
     });
   });
   ppPaste.addEventListener('click', function () {
-    function fill(t) { if (t && t.trim()) { ppTa.value = t.trim(); ppTa.focus(); } }
+    function fill(t, demo) {
+      if (t && t.trim()) {
+        ppTa.value = t.trim(); ppTa.focus();
+        if (demo) showToast('Вставлен демонстрационный прокси (буфер недоступен)');
+      }
+    }
     if (navigator.clipboard && navigator.clipboard.readText) {
-      navigator.clipboard.readText().then(fill).catch(function () {
-        fill('socks5://xz1thk:pgkUn6@23.236.132.183:9957');
+      navigator.clipboard.readText().then(function (t) { fill(t); }).catch(function () {
+        fill('socks5://xz1thk:pgkUn6@23.236.132.183:9957', true);
       });
-    } else { fill('socks5://xz1thk:pgkUn6@23.236.132.183:9957'); }
+    } else { fill('socks5://xz1thk:pgkUn6@23.236.132.183:9957', true); }
   });
   ppClear.addEventListener('click', function () { ppTa.value = ''; ppTa.focus(); });
   $('#ppOverlay .pp-buy').addEventListener('click', function () { showToast('Открываем маркетплейс прокси…'); });
   $$('#ppOverlay .pp-btn').forEach(function (b) {
     b.addEventListener('click', function () {
       var t = b.textContent.trim();
+      var lines = ppTa.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean).length;
       if (t.indexOf('Проверить') === 0) { showToast('Проверка прокси запущена…', 'ok'); }
-      else if (t.indexOf('В пул') === 0) { showToast('Прокси добавлены в пул', 'ok'); }
-      else if (t.indexOf('Назначить') === 0) { showToast('Прокси назначены аккаунтам (1)', 'ok'); closePP(); }
+      else if (t.indexOf('В пул') === 0) {
+        if (!lines) { showToast('Сначала введите или вставьте прокси в поле добавления', 'warn'); return; }
+        showToast('Прокси добавлены в пул: ' + lines + ' шт.', 'ok');
+        ppTa.value = '';
+      }
+      else if (t.indexOf('Назначить') === 0) {
+        var n = lines || (ppCheck.classList.contains('on') ? 1 : 0);
+        if (!n) { showToast('Нет ни выделенных прокси, ни строк в поле добавления', 'warn'); return; }
+        showToast('Прокси назначены аккаунтам (' + n + ')', 'ok'); closePP();
+      }
     });
   });
-  if (/[?&]proxy=1/.test(location.search) || /(^|#)pp$/.test(location.hash)) openPP();
 
   /* ============ МОДАЛКА «УПРАВЛЕНИЕ АККАУНТОМ» ============ */
   var amOverlay = $('#amOverlay');
   function openAM(tab) {
-    amOverlay.classList.add('open');
-    if (tab) switchAMTab(tab);
+    openLayer(amOverlay, '#amClose');
+    switchAMTab(tab || 'p-profile');
   }
-  function closeAM() { amOverlay.classList.remove('open'); }
+  function closeAM() { closeLayer(amOverlay); }
+  overlayClose['amOverlay'] = function () { closeAM(); };
   $('#amClose').addEventListener('click', closeAM);
   $('#amCloseBtn').addEventListener('click', closeAM);
   amOverlay.addEventListener('click', function (e) { if (e.target === amOverlay) closeAM(); });
 
   function switchAMTab(paneId) {
     $$('.am-tab', $('#amTabs')).forEach(function (t) {
-      t.classList.toggle('on', t.getAttribute('data-pane') === paneId);
+      var on = t.getAttribute('data-pane') === paneId;
+      t.classList.toggle('on', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
     });
     $$('.am-pane', $('#amBody')).forEach(function (p) {
       p.classList.toggle('on', p.id === paneId);
@@ -3426,40 +3430,53 @@
   $('#accInfoBtn').addEventListener('click', function () { openAM('p-profile'); });
   $('#accRowName').addEventListener('click', function () { openAM('p-profile'); });
   $('#accAvatarCell').addEventListener('click', function () { openAM('p-profile'); });
-  if (/[?&]am=1/.test(location.search) || /(^|#)am$/.test(location.hash)) openAM();
 
   // Внутренние взаимодействия AM
   $('#amDots').addEventListener('click', function () { showToast('Меню действий с аккаунтом'); });
   $('#amMailChange').addEventListener('click', function () { showToast('Смена почты для входа'); });
+  var amProxyBusy = false;
   $('#amProxyCheck').addEventListener('click', function () {
+    if (amProxyBusy) return;
+    amProxyBusy = true;
     var lat = $('#amLatency');
     lat.textContent = '…';
-    setTimeout(function () { lat.textContent = (95 + Math.floor(Math.random() * 30)) + ' ms'; showToast('Прокси проверен', 'ok'); }, 900);
+    setTimeout(function () {
+      lat.textContent = (95 + Math.floor(Math.random() * 30)) + ' ms';
+      showToast('Прокси проверен', 'ok');
+      amProxyBusy = false;
+    }, 900);
   });
   $('#amProxyEdit').addEventListener('click', function () { showToast('Редактирование прокси аккаунта'); });
   $('#amDelChats').addEventListener('click', function () { this.classList.toggle('on'); });
-  $$('.am-chip', $('#p-activity')).forEach(function (c) {
-    c.addEventListener('click', function () {
-      $$('.am-chip', $('#p-activity')).forEach(function (x) { x.classList.remove('on'); });
-      c.classList.add('on');
-    });
-  });
-  $$('.am-seg button', $('#p-status')).forEach(function (b) {
+  $$('.at-seg button', $('#p-activity')).forEach(function (b) {
     b.addEventListener('click', function () {
-      $$('.am-seg button', $('#p-status')).forEach(function (x) { x.classList.remove('on'); });
+      $$('.at-seg button', $('#p-activity')).forEach(function (x) { x.classList.remove('on'); });
       b.classList.add('on');
+      showToast('Период активности: ' + b.textContent.trim());
     });
   });
-  $$('.am-abtn', $('#p-actions')).forEach(function (b) {
+  $$('.at-chip', $('#p-status')).forEach(function (b) {
     b.addEventListener('click', function () {
+      $$('.at-chip', $('#p-status')).forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      showToast('История: ' + b.textContent.trim());
+    });
+  });
+  $$('.ac-b', $('#p-actions')).forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.classList.contains('disabled')) { showToast('Действие недоступно: нет активного спамблока', 'warn'); return; }
       var t = b.textContent.trim();
       if (t.indexOf('Снять') === 0) { showToast('Нет активного спамблока', 'warn'); return; }
       showToast('Задача отправлена: ' + t, 'ok');
     });
   });
-  $$('.am-warn-link, .am-slink.blue', amOverlay).forEach(function (b) {
-    b.addEventListener('click', function () { showToast(this.textContent.trim().split('\n')[0] || 'Действие'); });
+  var atExp = $('.at-exp', $('#p-status'));
+  if (atExp) atExp.addEventListener('click', function () { showToast('Экспорт истории статусов'); });
+  $$('.hbtn', amOverlay).forEach(function (b) {
+    b.addEventListener('click', function () { showToast('Свернуть/развернуть блок'); });
   });
+  var pfSel = $('.pf-select', amOverlay);
+  if (pfSel) pfSel.addEventListener('click', function () { showToast('Роль аккаунта — используйте меню роли в таблице'); });
   var amEdit = $('#amEditProfile');
   if (amEdit) amEdit.addEventListener('click', function () { showToast('Редактирование профиля аккаунта'); });
   $$('.pf-addrole', amOverlay).forEach(function (b) {
@@ -3472,68 +3489,119 @@
     btn.addEventListener('click', function () {
       var host = btn.closest('.pf-v') || btn.closest('.pf-row') || btn.closest('div');
       var v = (host ? host.textContent : '').trim().replace(/\s+/g, ' ');
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v);
-      showToast('Скопировано: ' + v, 'ok');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(v).then(
+          function () { showToast('Скопировано: ' + v, 'ok'); },
+          function () { showToast('Не удалось скопировать — нет доступа к буферу обмена', 'warn'); }
+        );
+      } else { showToast('Буфер обмена недоступен в этом браузере', 'warn'); }
     });
   });
 
   /* ============ МОДАЛКА «ДОБАВИТЬ АККАУНТ» ============ */
   var aaOverlay = $('#aaOverlay');
-  function openAA() { aaOverlay.classList.add('open'); }
-  function closeAA() { aaOverlay.classList.remove('open'); }
+  var aaStep = 0;
+  var aaMaxStep = 0;
+  var aaStepNames = ['Номер телефона', 'SMS код', '2FA (опционально)', 'Успех'];
+  var aaBtns = [
+    '<svg class="ic ic-14"><use href="#i-arrow-r"/></svg> Отправить SMS код',
+    '<svg class="ic ic-14"><use href="#i-check"/></svg> Подтвердить код',
+    '<svg class="ic ic-14"><use href="#i-check"/></svg> Подтвердить 2FA',
+    '<svg class="ic ic-14"><use href="#i-check"/></svg> Готово'
+  ];
+  function renderAAStep() {
+    $$('.aa-step2').forEach(function (s, i) { s.classList.toggle('on', i === aaStep); });
+    var qrMode = $('#aaByQr').classList.contains('on');
+    $$('.aa-stp', aaOverlay).forEach(function (b) { b.classList.remove('show'); });
+    if (qrMode) {
+      // QR-флоу: только QR-блок и обязательный ПРОКСИ
+      $('.aa-px', aaOverlay).classList.add('show');
+      $('#aaSend').innerHTML = '<svg class="ic ic-14"><use href="#i-check"/></svg> Готово';
+      return;
+    }
+    if (aaStep === 0) $$('.aa-s1', aaOverlay).forEach(function (b) { b.classList.add('show'); });
+    if (aaStep === 1) $$('.aa-s2', aaOverlay).forEach(function (b) { b.classList.add('show'); });
+    if (aaStep === 2) $$('.aa-s3', aaOverlay).forEach(function (b) { b.classList.add('show'); });
+    if (aaStep === 3) $$('.aa-s4', aaOverlay).forEach(function (b) { b.classList.add('show'); });
+    $('#aaSend').innerHTML = aaBtns[aaStep];
+  }
+  function setAAMode(qr) {
+    $('#aaByPhone').classList.toggle('on', !qr);
+    $('#aaByQr').classList.toggle('on', qr);
+    $('#aaQrBox').classList.toggle('show', qr);
+    $('.aa-steps2').style.display = qr ? 'none' : '';
+    renderAAStep();
+  }
+  function openAA() {
+    aaStep = 0; aaMaxStep = 0;
+    $('#aaCode').value = '';
+    $('#aa2fa').value = '';
+    // сброс глазков
+    $$('.eye', aaOverlay).forEach(function (e) {
+      var inp = e.parentElement.querySelector('input');
+      if (inp) inp.type = 'password';
+      e.innerHTML = '<svg class="ic ic-14"><use href="#i-eye2"/></svg>';
+      e.title = 'Показать пароль';
+    });
+    setAAMode(false);
+    renderAAStep();
+    openLayer(aaOverlay, '#aaClose');
+  }
+  function closeAA() { closeLayer(aaOverlay); }
+  overlayClose['aaOverlay'] = function () { closeAA(); };
   $('#addAccBtn').addEventListener('click', openAA);
   $('#aaClose').addEventListener('click', closeAA);
   aaOverlay.addEventListener('click', function (e) { if (e.target === aaOverlay) closeAA(); });
-
-  var aaStep = 0;
-  var aaStepNames = ['Номер телефона', 'SMS код', '2FA (опционально)', 'Успех'];
-  function renderAAStep() {
-    $$('.aa-step2').forEach(function (s, i) { s.classList.toggle('on', i === aaStep); });
-  }
   $$('.aa-step2').forEach(function (s, i) {
-    s.addEventListener('click', function () { aaStep = i; renderAAStep(); });
+    s.addEventListener('click', function () {
+      if (i > aaMaxStep) { showToast('Сначала завершите предыдущие шаги', 'warn'); return; }
+      aaStep = i; renderAAStep();
+    });
   });
   $('#aaSend').addEventListener('click', function () {
+    var qrMode = $('#aaByQr').classList.contains('on');
+    if (qrMode) { closeAA(); showToast('Аккаунт подключён по QR-коду', 'ok'); return; }
+    if (aaStep === 0 && !$('#aaPhone').value.trim()) { showToast('Введите номер телефона', 'warn'); return; }
+    if (aaStep === 1 && !$('#aaCode').value.trim()) { showToast('Введите код из SMS', 'warn'); return; }
     if (aaStep < 3) {
       aaStep++;
+      if (aaStep > aaMaxStep) aaMaxStep = aaStep;
       renderAAStep();
       showToast(aaStep === 1 ? 'SMS код отправлен на номер' : 'Шаг: ' + aaStepNames[aaStep], 'ok');
-      if (aaStep === 1) $('#aaSend').innerHTML = '<svg class="ic ic-14"><use href="#i-arrow-r"/></svg> Подтвердить код';
-      if (aaStep === 3) { $('#aaSend').innerHTML = '<svg class="ic ic-14"><use href="#i-check"/></svg> Готово'; }
     } else { closeAA(); showToast('Аккаунт добавлен!', 'ok'); }
   });
   // Переключатели По номеру / По QR-коду
-  $('#aaByPhone').addEventListener('click', function () {
-    this.classList.add('on'); $('#aaByQr').classList.remove('on');
-    $('#aaPhone').parentElement.style.display = ''; $('.aa-hint').style.display = '';
-  });
-  $('#aaByQr').addEventListener('click', function () {
-    this.classList.add('on'); $('#aaByPhone').classList.remove('on');
-    $('#aaPhone').parentElement.style.display = 'none'; $('.aa-hint').style.display = 'none';
-    showToast('Отображение QR-кода для входа');
-  });
+  $('#aaByPhone').addEventListener('click', function () { setAAMode(false); });
+  $('#aaByQr').addEventListener('click', function () { setAAMode(true); showToast('Отображение QR-кода для входа'); });
   // Строкой / Полями
   $('#aaStr').addEventListener('click', function () {
     this.classList.add('on'); $('#aaFld').classList.remove('on');
-    showToast('Ввод прокси одной строкой');
+    $('#aaGrid').style.display = 'none'; $('#aaStrBox').style.display = '';
   });
   $('#aaFld').addEventListener('click', function () {
     this.classList.add('on'); $('#aaStr').classList.remove('on');
+    $('#aaGrid').style.display = ''; $('#aaStrBox').style.display = 'none';
   });
-  // Глазок пароля
-  $('#aaEye').addEventListener('click', function () {
-    var p = $('#aaPass');
-    var show = p.type === 'password';
-    p.type = show ? 'text' : 'password';
-    this.innerHTML = '<svg class="ic ic-14"><use href="#i-eye2"/></svg>';
-  });
+  // Глазки паролей
+  function bindEye(btnId, inputId) {
+    var btn = $(btnId); if (!btn) return;
+    btn.addEventListener('click', function () {
+      var p = $(inputId);
+      var show = p.type === 'password';
+      p.type = show ? 'text' : 'password';
+      btn.innerHTML = '<svg class="ic ic-14"><use href="' + (show ? '#i-eye' : '#i-eye2') + '"/></svg>';
+      btn.title = show ? 'Скрыть пароль' : 'Показать пароль';
+    });
+  }
+  bindEye('#aaEye', '#aaPass');
+  bindEye('#aa2faEye', '#aa2fa');
   $('#aaType').addEventListener('click', function () { showToast('Выбор типа прокси: socks5 / http / https'); });
-  if (/[?&]aa=1/.test(location.search) || /(^|#)aa$/.test(location.hash)) openAA();
 
   /* ============ МОДАЛКА «ИМПОРТИРОВАТЬ АККАУНТЫ» ============ */
   var impOverlay = $('#impOverlay');
-  function openIMP() { impOverlay.classList.add('open'); }
-  function closeIMP() { impOverlay.classList.remove('open'); }
+  function openIMP() { openLayer(impOverlay, '#impClose'); }
+  function closeIMP() { closeLayer(impOverlay); }
+  overlayClose['impOverlay'] = function () { closeIMP(); };
   $('#importBtn').addEventListener('click', openIMP);
   $('#impClose').addEventListener('click', closeIMP);
   impOverlay.addEventListener('click', function (e) { if (e.target === impOverlay) closeIMP(); });
@@ -3550,19 +3618,47 @@
     showToast(this.classList.contains('on') ? 'Сброс чужих сессий включён' : 'Сброс чужих сессий выключен');
   });
   $('#impLimitInfo').addEventListener('click', function () { showToast('10 бесплатных слотов выдаются тарифом «Старт»'); });
-  $$('.imp-input', impOverlay).forEach(function () {});
-  if (/[?&]imp=1/.test(location.search) || /(^|#)imp$/.test(location.hash)) openIMP();
+  var impGo = $('#impGo');
+  if (impGo) impGo.addEventListener('click', function () {
+    var src = $('.imp-src.on .t', impOverlay);
+    var impInput = $('.imp-input', impOverlay);
+    if (!src || src.textContent !== 'Купить готовые') {
+      if (impInput && !impInput.value.trim()) { showToast('Укажите источник импорта или выберите файлы', 'warn'); return; }
+    }
+    showToast('Импорт запущен — источник: ' + (src ? src.textContent : 'файлы'), 'ok');
+    closeIMP();
+  });
 
   /* ============ ДРОПДАУН «ВЫБЕРИТЕ РОЛЬ» ============ */
   var roleDD = $('#roleDD');
   var rolePill = $('#rolePill');
   var roleDDOpen = false;
-  function openRoleDD() {
+  function positionRoleDD() {
     var r = rolePill.getBoundingClientRect();
-    roleDD.style.left = Math.round(r.left + r.width / 2 - 98) + 'px';
-    roleDD.style.bottom = Math.round(window.innerHeight - r.top + 8) + 'px';
-    roleDD.style.top = 'auto';
+    if (r.bottom < 0 || r.top > window.innerHeight) { if (roleDDOpen) closeRoleDD(); return; }
+    r = { top: Math.max(0, r.top), bottom: Math.min(window.innerHeight, r.bottom), left: r.left, width: r.width };
+    var list = document.getElementById('roleDDList');
+    var headH = roleDD.querySelector('.rd-head') ? roleDD.querySelector('.rd-head').offsetHeight : 44;
+    var chromeH = headH + 22; // шапка + зазор + каретка
+    var spaceAbove = Math.max(0, r.top - chromeH - 12);
+    var spaceBelow = Math.max(0, window.innerHeight - r.bottom - chromeH - 12);
+    var natural = list ? list.scrollHeight : 440;
+    var useAbove = spaceAbove >= Math.min(natural, 200) || spaceAbove >= spaceBelow;
+    var avail = useAbove ? spaceAbove : spaceBelow;
+    if (list) list.style.maxHeight = Math.max(150, Math.min(452, avail)) + 'px';
+    var left = Math.round(Math.max(8, Math.min(r.left + r.width / 2 - 98, window.innerWidth - 212)));
+    roleDD.style.left = left + 'px';
+    if (useAbove) {
+      roleDD.style.bottom = Math.round(window.innerHeight - r.top + 8) + 'px';
+      roleDD.style.top = 'auto';
+    } else {
+      roleDD.style.top = Math.round(Math.max(8, r.bottom + 8)) + 'px';
+      roleDD.style.bottom = 'auto';
+    }
+  }
+  function openRoleDD() {
     roleDD.classList.add('open');
+    positionRoleDD();
     roleDDOpen = true;
     rolePill.closest('tr').classList.add('dd-open');
   }
@@ -3590,6 +3686,7 @@
   document.addEventListener('click', function (e) {
     if (roleDDOpen && !roleDD.contains(e.target) && e.target !== rolePill) closeRoleDD();
   });
+  window.addEventListener('resize', function () { if (roleDDOpen) positionRoleDD(); });
 
   /* ============ САЙДБАР: НАВИГАЦИЯ ============ */
   $$('.nav-item').forEach(function (item) {
@@ -3643,32 +3740,68 @@
         'Удалить': 'Удаление аккаунтов'
       };
       var t = map[b.title] || b.title;
-      if (b.title === 'Выбрать') { showToast('Выделена 1 строка', 'ok'); }
+      if (b.title === 'Выбрать') {
+        var visCbs = rowCbs.filter(function (c) { return c.offsetParent !== null; });
+        if (!visCbs.length) { showToast('Нет видимых строк для выделения', 'warn'); return; }
+        var anyOff = visCbs.some(function (c) { return !c.classList.contains('on'); });
+        visCbs.forEach(function (c) { c.classList.toggle('on', anyOff); });
+        syncHead();
+        showToast(anyOff ? 'Выделено строк: ' + visCbs.length : 'Выделение снято', 'ok');
+      }
       else if (b.title === 'Обновить') { showToast('Таблица обновлена', 'ok'); }
-      else if (b.title === 'Удалить') { showToast('Сначала выделите аккаунты', 'warn'); }
+      else if (b.title === 'Удалить') {
+        var selN = rowCbs.filter(function (c) { return c.classList.contains('on'); }).length;
+        showToast(selN ? 'Удаление аккаунтов: ' + selN + ' шт. (демо)' : 'Сначала выделите аккаунты', selN ? 'ok' : 'warn');
+      }
       else showToast(t);
     });
   });
+  var pgInfo = $('.pg-info');
+  function updatePgInfo(visible) {
+    if (!pgInfo) return;
+    pgInfo.textContent = visible > 0 ? 'Показано 1-' + visible + ' из ' + visible + ' аккаунтов' : 'Ничего не найдено';
+  }
   $('.search input').addEventListener('input', function () {
     var q = this.value.trim();
     var row = $('#accRowName');
+    var vis;
     if (!q || 'Victoria'.toLowerCase().indexOf(q.toLowerCase()) >= 0) {
-      row.closest('tr').style.display = '';
-    } else { row.closest('tr').style.display = 'none'; }
+      row.closest('tr').style.display = ''; vis = 1;
+    } else { row.closest('tr').style.display = 'none'; vis = 0; }
+    updatePgInfo(vis);
   });
 
   /* ============ СТРОКА ТАБЛИЦЫ ============ */
   $('#accDotsBtn').addEventListener('click', function () { openAM('p-actions'); });
   var liveBtn = $('.live-btn');
   if (liveBtn) liveBtn.addEventListener('click', function () { openAM('p-proxy'); });
-  $$('.checkbox', $('.table-wrap')).forEach(function (cb) {
-    cb.addEventListener('click', function () { this.classList.toggle('on'); });
+
+  /* ============ ЧЕКБОКСЫ ТАБЛИЦЫ (шапка + строки + синхронизация) ============ */
+  var headCb = $('.table-wrap thead .checkbox');
+  var rowCbs = $$('.table-wrap tbody .checkbox');
+  function syncHead() {
+    if (!headCb) return;
+    var allOn = rowCbs.length > 0 && rowCbs.every(function (c) { return c.classList.contains('on'); });
+    headCb.classList.toggle('on', allOn);
+  }
+  rowCbs.forEach(function (cb) {
+    cb.addEventListener('click', function () { this.classList.toggle('on'); syncHead(); });
+  });
+  if (headCb) headCb.addEventListener('click', function () {
+    var on = !this.classList.contains('on');
+    rowCbs.forEach(function (c) { c.classList.toggle('on', on); });
+    this.classList.toggle('on', on);
   });
   $$('.pg').forEach(function (b) {
     b.addEventListener('click', function () {
-      $$('.pg').forEach(function (x) { x.classList.remove('active'); });
-      b.classList.add('active');
-      showToast('Страница: ' + (b.textContent.trim() || 'навигация'));
+      var isArrow = !b.textContent.trim();
+      if (!isArrow) {
+        $$('.pg').forEach(function (x) { x.classList.remove('active'); });
+        b.classList.add('active');
+        showToast('Страница: ' + b.textContent.trim(), 'ok');
+      } else {
+        showToast('Навигация по страницам');
+      }
     });
   });
   $('.pg-count').addEventListener('click', function () { showToast('Аккаунтов на страницу: 25 / 50 / 100'); });
@@ -3676,18 +3809,9 @@
     s.addEventListener('click', function () { showToast('Сортировка по колонке'); });
   });
 
-  /* ============ ПРОКSI-КНОПКА В СТРОКЕ ============ */
-  var proxyRowBtn = $('.proxy-btn');
-  if (proxyRowBtn) {
-    proxyRowBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      openAM('p-proxy');
-    });
-  }
-
   /* ============ ГЛУБОКИЕ ССЫЛКИ: hashchange ============ */
   window.addEventListener('hashchange', function () {
-    var h = location.hash || '';
+    var h = (location.hash || '').toLowerCase();
     closePP(); closeAM(); closeAA(); closeIMP(); closeRoleDD();
     if (/(^|#)pp$/.test(h)) openPP();
     else if (/(^|#)am$/.test(h)) openAM();
@@ -3695,9 +3819,160 @@
     else if (/(^|#)imp$/.test(h)) openIMP();
   });
 
-  /* ============ ESC закрывает всё ============ */
+  /* ============ V-FIX: ДОСТУПНОСТЬ — клавиатура + ARIA ============ */
+  var ariaMo = new MutationObserver(function (recs) {
+    recs.forEach(function (r) {
+      var el = r.target;
+      if (el.hasAttribute('aria-checked')) el.setAttribute('aria-checked', el.classList.contains('on') ? 'true' : 'false');
+    });
+  });
+  (function () {
+    function keyActivate(el, role) {
+      if (!el) return;
+      el.setAttribute('tabindex', '0');
+      if (role) el.setAttribute('role', role);
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+      });
+    }
+    // Сайдбар: пункты меню
+    $$('.nav-item').forEach(function (a) { keyActivate(a, 'button'); });
+    // Чекбоксы (span/div) — роль + состояние (aria синхронизируется наблюдателем при ЛЮБОМ изменении класса)
+    $$('.checkbox, .pp-check').forEach(function (cb) {
+      keyActivate(cb, 'checkbox');
+      cb.setAttribute('aria-checked', cb.classList.contains('on') ? 'true' : 'false');
+      ariaMo.observe(cb, { attributes: true, attributeFilter: ['class'] });
+    });
+    // Кастомные контролы
+    keyActivate(rolePill, 'button'); rolePill.setAttribute('aria-label', 'Роль аккаунта — изменить');
+    keyActivate($('#accAvatarCell'), 'button'); if ($('#accAvatarCell')) $('#accAvatarCell').setAttribute('aria-label', 'Открыть карточку аккаунта Victoria');
+    keyActivate($('#accRowName'), 'button'); if ($('#accRowName')) $('#accRowName').setAttribute('aria-label', 'Аккаунт Victoria — открыть карточку');
+    $$('.pg-count, .select-pill, .top-right .pill, .user-row, .pf-select, .pp-link, .at-exp').forEach(function (el) { keyActivate(el, 'button'); });
+    $$('.sort').forEach(function (s) {
+      s.setAttribute('tabindex', '0');
+      s.setAttribute('role', 'button');
+      s.setAttribute('aria-label', 'Сортировка по колонке');
+      s.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); s.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
+      });
+    });
+    keyActivate($('#impResetSwitch'), 'switch');
+    if ($('#impResetSwitch')) {
+      $('#impResetSwitch').setAttribute('aria-checked', 'false');
+      $('#impResetSwitch').addEventListener('click', function () {
+        this.setAttribute('aria-checked', this.classList.contains('on') ? 'true' : 'false');
+      });
+    }
+    var amDelChats = $('#amDelChats');
+    keyActivate(amDelChats, 'checkbox');
+    if (amDelChats) {
+      amDelChats.setAttribute('aria-checked', 'false');
+      amDelChats.addEventListener('click', function () {
+        this.setAttribute('aria-checked', this.classList.contains('on') ? 'true' : 'false');
+      });
+    }
+    // Пункты дропдауна роли: Enter/Space + стрелки
+    var rdItems = $$('.rd-item', roleDD);
+    rdItems.forEach(function (item, idx) {
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('role', 'option');
+      item.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); }
+        else if (e.key === 'ArrowDown' && rdItems[idx + 1]) { e.preventDefault(); rdItems[idx + 1].focus(); }
+        else if (e.key === 'ArrowUp' && rdItems[idx - 1]) { e.preventDefault(); rdItems[idx - 1].focus(); }
+      });
+    });
+    // Кнопки пагинации: имена
+    var pgNames = ['Первая страница', 'Предыдущая страница', 'Следующая страница', 'Последняя страница'];
+    var pgArrowIdx = 0;
+    $$('.pg').forEach(function (b) {
+      if (!b.textContent.trim()) {
+        b.setAttribute('aria-label', pgNames[pgArrowIdx] || 'Навигация по страницам');
+        pgArrowIdx++;
+      }
+    });
+    // aria-pressed для сегментов/источников
+    $$('.pp-seg, .imp-src, .at-seg button, .at-chip, #aaByPhone, #aaByQr, #aaStr, #aaFld').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.classList.contains('on') ? 'true' : 'false');
+      b.addEventListener('click', function () {
+        b.setAttribute('aria-pressed', b.classList.contains('on') ? 'true' : 'false');
+      });
+    });
+    // Подписи полей форм из видимых лейблов
+    $$('.aa-f').forEach(function (f) {
+      var lab = $('.aa-lab', f), inp = $('input, textarea, select', f);
+      if (lab && inp && !inp.getAttribute('aria-label')) inp.setAttribute('aria-label', lab.textContent.trim());
+    });
+    $$('.ac-num input').forEach(function (inp) {
+      var row = inp.closest('.ac-drow');
+      var lab = row ? $('.lab', inp.parentElement) || $('.lab', row) : null;
+      var dhead = inp.closest('.ac-delay');
+      var dt = dhead ? $('.dt', dhead) : null;
+      var ctx = dt ? dt.textContent.trim() : 'Задержка';
+      inp.setAttribute('aria-label', (lab ? lab.textContent.trim() + ' — ' : '') + ctx);
+      inp.setAttribute('inputmode', 'decimal');
+    });
+    var impInput = $('.imp-input', impOverlay);
+    if (impInput && !impInput.getAttribute('aria-label')) impInput.setAttribute('aria-label', 'Источник импорта: ник или ссылка на профиль продавца');
+    if (ppTa && !ppTa.getAttribute('aria-label')) ppTa.setAttribute('aria-label', 'Поле добавления прокси, по одному в строке');
+    var searchInp = $('.search input');
+    if (searchInp && !searchInp.getAttribute('aria-label')) searchInp.setAttribute('aria-label', 'Поиск по аккаунтам');
+    // Таблица: scope заголовков
+    $$('.table-wrap thead th').forEach(function (th) { th.setAttribute('scope', 'col'); });
+    // Вкладки AM: таб-семантика
+    var amTabsBox = $('#amTabs');
+    if (amTabsBox) {
+      amTabsBox.setAttribute('role', 'tablist');
+      amTabsBox.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        var tabs = $$('.am-tab', amTabsBox);
+        var idx = tabs.indexOf(document.activeElement);
+        if (idx < 0) return;
+        e.preventDefault();
+        var next = e.key === 'ArrowRight' ? (idx + 1) % tabs.length : (idx - 1 + tabs.length) % tabs.length;
+        tabs[next].focus();
+        tabs[next].click();
+      });
+      $$('.am-tab', amTabsBox).forEach(function (t) {
+        t.setAttribute('role', 'tab');
+        t.setAttribute('aria-selected', t.classList.contains('on') ? 'true' : 'false');
+        var pane = $('#' + t.getAttribute('data-pane'));
+        if (pane) { pane.setAttribute('role', 'tabpanel'); pane.setAttribute('aria-labelledby', 'amTab_' + t.getAttribute('data-pane')); t.id = 'amTab_' + t.getAttribute('data-pane'); }
+      });
+    }
+  })();
+
+  /* ============ ГЛУБОКИЕ ССЫЛКИ: начальное состояние (только один слой) ============ */
+  (function () {
+    var h = (location.hash || '').toLowerCase();
+    var s = location.search;
+    if (/[?&]proxy=1/.test(s) || /(^|#)pp$/.test(h)) openPP();
+    else if (/[?&]am=1/.test(s) || /(^|#)am$/.test(h)) openAM();
+    else if (/[?&]aa=1/.test(s) || /(^|#)aa$/.test(h)) openAA();
+    else if (/[?&]imp=1/.test(s) || /(^|#)imp$/.test(h)) openIMP();
+  })();
+
+  /* ============ ESCAPE (верхний слой) + ЛОВУШКА TAB ============ */
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { closePP(); closeAM(); closeAA(); closeIMP(); closeRoleDD(); }
+    if (e.key === 'Escape') {
+      if (LAYERS.length) {
+        var top = LAYERS[LAYERS.length - 1];
+        var fn = overlayClose[top.id];
+        if (fn) fn();
+      } else if (roleDDOpen) { closeRoleDD(); }
+      return;
+    }
+    if (e.key === 'Tab' && LAYERS.length) {
+      var topO = LAYERS[LAYERS.length - 1];
+      var items = $$(FOCUSABLE, topO).filter(function (el) {
+        return el.offsetWidth > 0 || el.offsetHeight > 0;
+      });
+      if (!items.length) return;
+      var first = items[0], last = items[items.length - 1];
+      if (!topO.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
   });
 })();
 </script>
